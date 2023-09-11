@@ -3,23 +3,29 @@ package com.example.news_system.constant;
 public enum RtnCode {
 	
 //	ニュース
-    CREATE_NEWS_SUCCESS("200", "新增成功"),
-    SEARCH_NEWS_SUCCESS("200", "搜尋成功"),
-    UPDATE_NEWS_SUCCESS("200", "更新成功"),
-    INACTIVE_NEWS_SUCCESS("200", "刪除成功"),
-    NEWS_DATE_ERROR("400", "日期有誤"),
-    CATEGORY_ERROR("400", "分類數量有誤"),
-    NOT_FOUND("401", "查無相關資料"),
-    NOT_ACTIVE("401", "文章不存在!"),
+    ADD_NEWS_SUCCESS("200", "V 新增成功"),
+    SEARCH_NEWS_SUCCESS("200", "V 搜尋成功"),
+    UPDATE_NEWS_SUCCESS("200", "V 更新成功"),
+    INACTIVE_NEWS_SUCCESS("200", "V 隱藏消息成功"),
+    NEWS_DATE_ERROR("400", "X 日期有誤"),
+    NEWS_NOT_FOUND("401", "X 查無相關資料"),
+    NEWS_NOT_ACTIVE("401", "X 文章不存在!"),
+    
 //  使用者
-    ADD_USER_SUCCESS("200","新增使用者成功"),
-    USER_ACCOUNT_ERROR("400", "帳號格式錯誤!"),
-    USER_PASSWORD_ERROR("400", "密碼格式錯誤!"),
-    USER_ALREADY_EXIST("400", "使用者已存在"),
-    LOGIN_SUCCESS("200","登入成功"),
-    LOGIN_FAILED("400", "登入失敗"),
+    USER_ACCOUNT_ERROR("400", "X 帳號格式錯誤"),
+    USER_PASSWORD_ERROR("400", "X 密碼格式錯誤"),
+    USER_LOGIN_SUCCESS("200","V 登入成功"),
+    USER_LOGIN_FAILED("401", "X 登入失敗"),
+    
+//  分類
+    ADD_CATEGORY_SUCCESS("200","V 新增分類成功"),
+    UPDATE_CATEGORY_SUCCESS("200","V 更新分類成功"),
+    DELETE_CATEGORY_SUCCESS("200","V 刪除分類成功"),
+    CATEGORY_ERROR("400","X 分類有誤"),
+    CATEGORY_NOT_FOUND("401","X 查無此分類，請先新增"),
+    
 //  共有
-    CANNOT_EMPTY("400", "請勿空白"),
+    CANNOT_EMPTY("400", "請勿空白，請查看欄位"),
     ;
 
 

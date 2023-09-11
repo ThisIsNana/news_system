@@ -31,7 +31,7 @@ public class News {
 	private String newsUpdateName;
 
 	@Column(name = "news_category_id")
-	private String newsCategoryId;
+	private int newsCategoryId;
 
 	@Column(name = "news_description")
 	private String newsDescription;
@@ -49,7 +49,7 @@ public class News {
 	}
 
 	public News(int newsId, String newsTitle, LocalDateTime newsCreateDate, LocalDateTime newsUpdateDate,
-			String newsUpdateName, String newsCategoryId, String newsDescription, int newsReadingCount,
+			String newsUpdateName, int newsCategoryId, String newsDescription, int newsReadingCount,
 			boolean newsActive) {
 		super();
 		this.newsId = newsId;
@@ -105,11 +105,11 @@ public class News {
 		this.newsUpdateName = newsUpdateName;
 	}
 
-	public String getNewsCategoryId() {
+	public int getNewsCategoryId() {
 		return newsCategoryId;
 	}
 
-	public void setNewsCategoryId(String newsCategoryId) {
+	public void setNewsCategoryId(int newsCategoryId) {
 		this.newsCategoryId = newsCategoryId;
 	}
 
