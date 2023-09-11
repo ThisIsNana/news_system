@@ -17,7 +17,17 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+	//implementation 'org.springframework.boot:spring-boot-starter-web:2.7.10' 
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//MySQL connector Java 8.0.31
+	implementation 'mysql:mysql-connector-java:8.0.31'
+	
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+	//Gson
+	implementation 'com.google.code.gson:gson:2.8.8'
 }
 
 tasks.named('test') {
