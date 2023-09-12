@@ -90,12 +90,12 @@ public class NewsServiceImpl implements NewsService {
 	
 	// 更新消息
 	@Override
-	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateTime, String newsUpdateName,
+	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateDate, String newsUpdateName,
 			int newsCategoryId, String newsDescription) {
 
 		// 防呆
 		if (!StringUtils.hasText(newsTitle) || !StringUtils.hasText(newsDescription)
-				|| !StringUtils.hasText(newsUpdateName) || newsId < 0 || newsUpdateTime == null || newsCategoryId < 0) {
+				|| !StringUtils.hasText(newsUpdateName) || newsId < 0 || newsUpdateDate == null || newsCategoryId < 0) {
 			return new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 
@@ -114,7 +114,7 @@ public class NewsServiceImpl implements NewsService {
 		News result = resultOp.get();
 		result.setNewsTitle(newsTitle);
 		result.setNewsDescription(newsDescription);
-		result.setNewsUpdateDate(newsUpdateTime);
+		result.setNewsUpdateDate(newsUpdateDate);
 		result.setNewsUpdateName(newsUpdateName);
 		result.setNewsCategoryId(newsCategoryId);
 
@@ -154,6 +154,27 @@ public class NewsServiceImpl implements NewsService {
 	}
 	
 	
+
+	// 更新閱覽數
+	@Override
+	public NewsResponse updateReadingCount(int newsId) {
+		
+		// 防呆
+		if(newsId < 0) {
+		}
+		
+		// 消息不存在
+		Optional<News> resultOp = newsDao.findById(newsId);
+		if(!resultOp.isPresent()) {
+			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
+		}
+		
+		//有資料就加1
+		News result = resultOp.get();
+		result.setNewsReadingCount(result.getNewsReadingCount() + 1);
+		return new NewsResponse(result, RtnCode.UPDATE_NEWS_SUCCESS.getMessage());
+	}
+	
 	
 	
 	// 搜尋消息(標題、起始時間、結束時間)
@@ -185,10 +206,9 @@ public class NewsServiceImpl implements NewsService {
 	// 搜尋消息(by分類id)
 	@Override
 	public NewsResponse searchNewsByCategoryFatherOrChild(String categoryFather, String categoryChild) {
-		
-		// 都沒選擇時，顯示全部消息
-		if(!StringUtils.hasText(categoryFather) && !StringUtils.hasText(categoryChild)) {
-			return this.showAllNews();
+
+		if(!StringUtils.hasText(categoryFather) || !StringUtils.hasText(categoryChild)) {
+			return new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 		
 		// 找出categoryId
@@ -200,27 +220,5 @@ public class NewsServiceImpl implements NewsService {
 		return new NewsResponse(result, RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
 	}
 
-	
-	
-	
-	// 更新閱覽數
-	@Override
-	public NewsResponse updateReadingCount(int newsId) {
-		
-		// 防呆
-		if(newsId < 0) {
-		}
-		
-		// 消息不存在
-		Optional<News> resultOp = newsDao.findById(newsId);
-		if(!resultOp.isPresent()) {
-			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
-		}
-		
-		//有資料就加1
-		News result = resultOp.get();
-		result.setNewsReadingCount(result.getNewsReadingCount() + 1);
-		return new NewsResponse(result, RtnCode.UPDATE_NEWS_SUCCESS.getMessage());
-	}
 
 }

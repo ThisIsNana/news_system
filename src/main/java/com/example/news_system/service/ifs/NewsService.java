@@ -21,12 +21,17 @@ public interface NewsService {
 
 	
 	// 更新消息
-	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateTime, String newsUpdateName,
+	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateDate, String newsUpdateName,
 			int newsCategoryId, String newsDescription);
 	
 
 	// 不顯示消息
 	public NewsResponse inactiveNews(int newsId);
+	
+	
+	
+	// 更新閱覽數
+	public NewsResponse updateReadingCount(int newsId);
 	
 	
 	// 搜尋消息(標題、起迄時間)
@@ -38,7 +43,5 @@ public interface NewsService {
 	
 	
 	
-	// 更新閱覽數
-	public NewsResponse updateReadingCount(int newsId);
 
 }
