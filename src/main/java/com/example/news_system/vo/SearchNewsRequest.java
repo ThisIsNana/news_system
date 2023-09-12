@@ -5,21 +5,24 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SearchNewsRequest {
-	
+
 	@JsonProperty("search_title")
 	private String title;
-	
+
 	@JsonProperty("search_start_date")
 	private LocalDate startDate;
-	
+
 	@JsonProperty("search_end_date")
 	private LocalDate endDate;
-	
+
 	@JsonProperty("search_category_father")
 	private String categoryFather;
-	
+
 	@JsonProperty("search_category_child")
 	private String categoryChild;
+
+	@JsonProperty("search_news_user")
+	private String searchNewsUser;
 
 	public String getTitle() {
 		return title;
@@ -60,6 +63,13 @@ public class SearchNewsRequest {
 	public void setCategoryChild(String categoryChild) {
 		this.categoryChild = categoryChild;
 	}
-	
-	
+
+	public String getSearchNewsUser() {
+		return searchNewsUser;
+	}
+
+	public void setSearchNewsUser(String searchNewsUser) {
+		this.searchNewsUser = searchNewsUser;
+	}
+
 }

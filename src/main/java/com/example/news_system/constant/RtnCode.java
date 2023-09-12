@@ -15,7 +15,7 @@ public enum RtnCode {
     USER_ACCOUNT_ERROR("400", "X 帳號格式錯誤"),
     USER_PASSWORD_ERROR("400", "X 密碼格式錯誤"),
     USER_LOGIN_SUCCESS("200","V 登入成功"),
-    USER_LOGIN_FAILED("401", "X 登入失敗"),
+    USER_LOGIN_FAILED("401", "X 登入失敗，帳號或密碼錯誤"),
     
 //  分類
     ADD_CATEGORY_SUCCESS("200","V 新增分類成功"),

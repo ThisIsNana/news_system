@@ -32,5 +32,7 @@ public interface NewsDao extends JpaRepository<News, Integer>{
 //	@Query("SELECT n FROM News n ORDER BY n.newsCreateDate DESC")
 	public List<News> findAllByOrderByNewsCreateDateDesc();
 
-
+	//搜尋某使用者發布、編輯的所有文章
+	public List<News> findByNewsCreateUserOrNewsUpdateUser(String newsCreareUser, String newsUpdateUser);
+	
 }

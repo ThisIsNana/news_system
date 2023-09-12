@@ -1,12 +1,12 @@
 package com.example.news_system.vo;
 
+import com.example.news_system.entity.Users;
+
 public class UserResponse {
-	
-	//只回傳需要的值就好(是否為使用者及其姓名)
 
 	private boolean isUser;
 
-	private String userName;
+	private Users user;
 
 	private String message;
 
@@ -27,25 +27,25 @@ public class UserResponse {
 		this.message = message;
 	}
 
-	public UserResponse(boolean isUser, String userName, String message) {
+	public UserResponse(boolean isUser, Users user, String message) {
 		super();
 		this.isUser = isUser;
-		this.userName = userName;
+		this.user = user;
 		this.message = message;
 	}
-
+	
 	// ========================================================
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 	public boolean isUser() {
 		return isUser;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
 	}
 
 	public void setUser(boolean isUser) {

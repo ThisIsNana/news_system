@@ -73,15 +73,25 @@ public class NewsController {
 	
 	
 	// 搜尋消息(標題、起迄時間)
-	@PostMapping(value="searchNews")
+	@PostMapping(value="search_news_title_date")
 	public NewsResponse searchNews(@RequestBody SearchNewsRequest request) {
 		return newsService.searchNews(request.getTitle(), request.getStartDate(), request.getEndDate());
 	}
 	
+	
+	
 	// 搜尋消息(by分類)
-	@PostMapping(value="searchNews")
+	@PostMapping(value="search_news_category")
 	public NewsResponse searchNewsByCategoryFatherOrChild(@RequestBody SearchNewsRequest request) {
 		return newsService.searchNewsByCategoryFatherOrChild(request.getCategoryFather(), request.getCategoryChild());
+	}
+	
+
+	
+	//搜尋某使用者發布、編輯的所有文章
+	@PostMapping(value="search_news_user")
+	public NewsResponse searchNewsByUser(@RequestBody SearchNewsRequest request) {
+		return newsService.searchNewsByUser(request.getSearchNewsUser());
 	}
 	
 	

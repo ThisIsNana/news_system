@@ -24,11 +24,14 @@ public class News {
 	@Column(name = "news_create_date")
 	private LocalDateTime newsCreateDate;
 
+	@Column(name = "news_create_user")
+	private String newsCreateUser;
+
 	@Column(name = "news_update_date")
 	private LocalDateTime newsUpdateDate;
 
-	@Column(name = "news_update_name")
-	private String newsUpdateName;
+	@Column(name = "news_update_user")
+	private String newsUpdateUser;
 
 	@Column(name = "news_category_id")
 	private int newsCategoryId;
@@ -48,15 +51,16 @@ public class News {
 		super();
 	}
 
-	public News(int newsId, String newsTitle, LocalDateTime newsCreateDate, LocalDateTime newsUpdateDate,
-			String newsUpdateName, int newsCategoryId, String newsDescription, int newsReadingCount,
-			boolean newsActive) {
+	public News(int newsId, String newsTitle, LocalDateTime newsCreateDate, String newsCreateUser,
+			LocalDateTime newsUpdateDate, String newsUpdateUser, int newsCategoryId, String newsDescription,
+			int newsReadingCount, boolean newsActive) {
 		super();
 		this.newsId = newsId;
 		this.newsTitle = newsTitle;
 		this.newsCreateDate = newsCreateDate;
+		this.newsCreateUser = newsCreateUser;
 		this.newsUpdateDate = newsUpdateDate;
-		this.newsUpdateName = newsUpdateName;
+		this.newsUpdateUser = newsUpdateUser;
 		this.newsCategoryId = newsCategoryId;
 		this.newsDescription = newsDescription;
 		this.newsReadingCount = newsReadingCount;
@@ -89,6 +93,14 @@ public class News {
 		this.newsCreateDate = newsCreateDate;
 	}
 
+	public String getNewsCreateUser() {
+		return newsCreateUser;
+	}
+
+	public void setNewsCreateUser(String newsCreateUser) {
+		this.newsCreateUser = newsCreateUser;
+	}
+
 	public LocalDateTime getNewsUpdateDate() {
 		return newsUpdateDate;
 	}
@@ -97,12 +109,12 @@ public class News {
 		this.newsUpdateDate = newsUpdateDate;
 	}
 
-	public String getNewsUpdateName() {
-		return newsUpdateName;
+	public String getNewsUpdateUser() {
+		return newsUpdateUser;
 	}
 
-	public void setNewsUpdateName(String newsUpdateName) {
-		this.newsUpdateName = newsUpdateName;
+	public void setNewsUpdateUser(String newsUpdateUser) {
+		this.newsUpdateUser = newsUpdateUser;
 	}
 
 	public int getNewsCategoryId() {

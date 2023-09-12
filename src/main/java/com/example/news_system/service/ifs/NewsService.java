@@ -3,6 +3,8 @@ package com.example.news_system.service.ifs;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.data.jpa.repository.Query;
+
 import com.example.news_system.vo.NewsResponse;
 
 public interface NewsService {
@@ -16,12 +18,12 @@ public interface NewsService {
 	
 	
 	// 新增消息
-	public NewsResponse addNews(String newsTitle, LocalDateTime newsCreateDate, String newsUpdateName, 
+	public NewsResponse addNews(String newsTitle, LocalDateTime newsCreateDate, String newsCreateUser, 
 			int newsCategoryId, String newsDescription);
 
 	
 	// 更新消息
-	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateDate, String newsUpdateName,
+	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateDate, String newsUpdateUser,
 			int newsCategoryId, String newsDescription);
 	
 
@@ -42,6 +44,8 @@ public interface NewsService {
 	public NewsResponse searchNewsByCategoryFatherOrChild(String categoryFather, String categoryChild);
 	
 	
+	// 搜尋使用者曾經發布、編輯的文章
+	public NewsResponse searchNewsByUser(String userAccount);
 	
-
+	
 }

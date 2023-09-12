@@ -57,12 +57,12 @@ public class NewsServiceImpl implements NewsService {
 	
 	// 新增消息
 	@Override
-	public NewsResponse addNews(String newsTitle, LocalDateTime newsCreateDate, String newsUpdateName,
+	public NewsResponse addNews(String newsTitle, LocalDateTime newsCreateDate, String newsCreateUser,
 			int newsCategoryId, String newsDescription) {
 
 		// 防呆
 		if (!StringUtils.hasText(newsTitle) || !StringUtils.hasText(newsDescription)
-				|| !StringUtils.hasText(newsUpdateName) || newsCreateDate == null || newsCategoryId < 0) {
+				|| !StringUtils.hasText(newsCreateUser) || newsCreateDate == null || newsCategoryId < 0) {
 			return new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 
@@ -75,9 +75,10 @@ public class NewsServiceImpl implements NewsService {
 		News news = new News();
 		news.setNewsTitle(newsTitle);
 		news.setNewsCreateDate(newsCreateDate);
+		news.setNewsCreateUser(newsCreateUser);
 		news.setNewsUpdateDate(newsCreateDate);
+		news.setNewsUpdateUser(newsCreateUser);
 		news.setNewsCategoryId(newsCategoryId);
-		news.setNewsUpdateName(newsUpdateName);
 		news.setNewsDescription(newsDescription);
 
 		newsDao.save(news);
@@ -90,12 +91,12 @@ public class NewsServiceImpl implements NewsService {
 	
 	// 更新消息
 	@Override
-	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateDate, String newsUpdateName,
+	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateDate, String newsUpdateUser,
 			int newsCategoryId, String newsDescription) {
 
 		// 防呆
 		if (!StringUtils.hasText(newsTitle) || !StringUtils.hasText(newsDescription)
-				|| !StringUtils.hasText(newsUpdateName) || newsId < 0 || newsUpdateDate == null || newsCategoryId < 0) {
+				|| !StringUtils.hasText(newsUpdateUser) || newsId < 0 || newsUpdateDate == null || newsCategoryId < 0) {
 			return new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 
@@ -115,7 +116,7 @@ public class NewsServiceImpl implements NewsService {
 		result.setNewsTitle(newsTitle);
 		result.setNewsDescription(newsDescription);
 		result.setNewsUpdateDate(newsUpdateDate);
-		result.setNewsUpdateName(newsUpdateName);
+		result.setNewsUpdateUser(newsUpdateUser);
 		result.setNewsCategoryId(newsCategoryId);
 
 		newsDao.save(result);
@@ -219,6 +220,19 @@ public class NewsServiceImpl implements NewsService {
 		
 		return new NewsResponse(result, RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
 	}
+
+	
+	// 搜尋某使用者發布、編輯的所有文章
+	@Override
+	public NewsResponse searchNewsByUser(String userAccount) {
+		List<News> result = newsDao.findByNewsCreateUserOrNewsUpdateUser(userAccount, userAccount);
+		if(result.isEmpty()) {
+			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
+		}
+		
+		return new NewsResponse(result, RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
+	}
+	
 
 
 }
