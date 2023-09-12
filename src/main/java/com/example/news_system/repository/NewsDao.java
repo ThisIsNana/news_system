@@ -13,7 +13,7 @@ import com.example.news_system.entity.News;
 @Repository
 public interface NewsDao extends JpaRepository<News, Integer>{
 
-//	¥ÎJPQL¨Ó¨ú¥N¤¾ªøªºJPA:)
+//	ç”¨JPQLä¾†å–ä»£å†—é•·çš„JPA:)
 	@Query("SELECT n FROM News n " +
 		       "WHERE (:title IS NULL OR n.newsTitle LIKE %:title%) " +
 		       "AND (:startDate IS NULL OR n.newsCreateDate >= :startDate) " +
@@ -25,14 +25,14 @@ public interface NewsDao extends JpaRepository<News, Integer>{
 		);
 	
 	
-	// ·j´M¤l¤ÀÃş
+	// æœå°‹å­åˆ†é¡
 	public List<News> findByNewsCategoryIdOrderByNewsCreateDateDesc(int categoryId);
 	
 	
 //	@Query("SELECT n FROM News n ORDER BY n.newsCreateDate DESC")
 	public List<News> findAllByOrderByNewsCreateDateDesc();
 
-	//·j´M¬Y¨Ï¥ÎªÌµo¥¬¡B½s¿èªº©Ò¦³¤å³¹
+	//æœå°‹æŸä½¿ç”¨è€…ç™¼å¸ƒã€ç·¨è¼¯çš„æ‰€æœ‰æ–‡ç« 
 	public List<News> findByNewsCreateUserOrNewsUpdateUser(String newsCreareUser, String newsUpdateUser);
 	
 }

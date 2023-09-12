@@ -22,7 +22,7 @@ public class NewsController {
 	@Autowired
  	private NewsService newsService;
 	
-	// Åã¥Ü©Ò¦³®ø®§
+	// é¡¯ç¤ºæ‰€æœ‰æ¶ˆæ¯
 	@GetMapping(value = "show_all_news")
 	public NewsResponse showAllNews() {
 		return newsService.showAllNews();
@@ -30,7 +30,7 @@ public class NewsController {
  	
 	
 	
-	// Åã¥Ü³æ¤@®ø®§
+	// é¡¯ç¤ºå–®ä¸€æ¶ˆæ¯
 	@PostMapping(value="show_one_news")
 	public NewsResponse showOneNews(@RequestBody ShowNewsRequest request) {
 		return newsService.showOneNews(request.getNewsId());
@@ -38,7 +38,7 @@ public class NewsController {
 	
 
 	
-	// ·s¼W®ø®§
+	// æ–°å¢æ¶ˆæ¯
 	@PostMapping(value="add_news")
 	public NewsResponse addNews(@RequestBody AddNewsRequest request) {
 		return newsService.addNews(request.getNewsTitle(), request.getNewsCreateDate(), request.getNewsUpdateName(),
@@ -47,7 +47,7 @@ public class NewsController {
 	
 	
 	
-	// §ó·s®ø®§
+	// æ›´æ–°æ¶ˆæ¯
 	@PostMapping(value="updateNews")
 	public NewsResponse updateNews(@RequestBody UpdateNewsRequest request) {
 		return newsService.updateNews(request.getNewsId(),request.getNewsTitle(), 
@@ -56,7 +56,7 @@ public class NewsController {
 	}
 	
 	
-	// ¤£Åã¥Ü®ø®§
+	// ä¸é¡¯ç¤ºæ¶ˆæ¯
 	@PostMapping(value="inactive_news")
 	public NewsResponse inactiveNews(@RequestBody UpdateNewsRequest request) {
 		return newsService.inactiveNews(request.getNewsId());
@@ -64,7 +64,7 @@ public class NewsController {
 	
 	
 	
-	// §ó·s¾\Äı¼Æ
+	// æ›´æ–°é–±è¦½æ•¸
 	@PostMapping(value="update_reading_count")
 	public NewsResponse updateReadingCount(@RequestBody UpdateNewsRequest request) {
 		return newsService.updateReadingCount(request.getNewsId());
@@ -72,7 +72,7 @@ public class NewsController {
 	
 	
 	
-	// ·j´M®ø®§(¼ĞÃD¡B°_¨´®É¶¡)
+	// æœå°‹æ¶ˆæ¯(æ¨™é¡Œã€èµ·è¿„æ™‚é–“)
 	@PostMapping(value="search_news_title_date")
 	public NewsResponse searchNews(@RequestBody SearchNewsRequest request) {
 		return newsService.searchNews(request.getTitle(), request.getStartDate(), request.getEndDate());
@@ -80,7 +80,7 @@ public class NewsController {
 	
 	
 	
-	// ·j´M®ø®§(by¤ÀÃş)
+	// æœå°‹æ¶ˆæ¯(byåˆ†é¡)
 	@PostMapping(value="search_news_category")
 	public NewsResponse searchNewsByCategoryFatherOrChild(@RequestBody SearchNewsRequest request) {
 		return newsService.searchNewsByCategoryFatherOrChild(request.getCategoryFather(), request.getCategoryChild());
@@ -88,7 +88,7 @@ public class NewsController {
 	
 
 	
-	//·j´M¬Y¨Ï¥ÎªÌµo¥¬¡B½s¿èªº©Ò¦³¤å³¹
+	//æœå°‹æŸä½¿ç”¨è€…ç™¼å¸ƒã€ç·¨è¼¯çš„æ‰€æœ‰æ–‡ç« 
 	@PostMapping(value="search_news_user")
 	public NewsResponse searchNewsByUser(@RequestBody SearchNewsRequest request) {
 		return newsService.searchNewsByUser(request.getSearchNewsUser());

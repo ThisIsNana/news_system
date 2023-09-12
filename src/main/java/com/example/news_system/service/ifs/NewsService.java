@@ -3,48 +3,46 @@ package com.example.news_system.service.ifs;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import org.springframework.data.jpa.repository.Query;
-
 import com.example.news_system.vo.NewsResponse;
 
 public interface NewsService {
 	
-	// Åã¥Ü©Ò¦³®ø®§
+	// é¡¯ç¤ºæ‰€æœ‰æ¶ˆæ¯
 	public NewsResponse showAllNews();
 	
 	
-	// Åã¥Ü³æ¤@®ø®§
+	// é¡¯ç¤ºå–®ä¸€æ¶ˆæ¯
 	public NewsResponse showOneNews(int newsId);
 	
 	
-	// ·s¼W®ø®§
+	// æ–°å¢æ¶ˆæ¯
 	public NewsResponse addNews(String newsTitle, LocalDateTime newsCreateDate, String newsCreateUser, 
 			int newsCategoryId, String newsDescription);
 
 	
-	// §ó·s®ø®§
+	// æ›´æ–°æ¶ˆæ¯
 	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateDate, String newsUpdateUser,
 			int newsCategoryId, String newsDescription);
 	
 
-	// ¤£Åã¥Ü®ø®§
+	// ä¸é¡¯ç¤ºæ¶ˆæ¯
 	public NewsResponse inactiveNews(int newsId);
 	
 	
 	
-	// §ó·s¾\Äı¼Æ
+	// æ›´æ–°é–±è¦½æ•¸
 	public NewsResponse updateReadingCount(int newsId);
 	
 	
-	// ·j´M®ø®§(¼ĞÃD¡B°_¨´®É¶¡)
+	// æœå°‹æ¶ˆæ¯(æ¨™é¡Œã€èµ·è¿„æ™‚é–“)
 	public NewsResponse searchNews(String title, LocalDate startDate, LocalDate endDate);
 	
 	
-	// ·j´M®ø®§(by¤ÀÃş)
+	// æœå°‹æ¶ˆæ¯(byåˆ†é¡)
 	public NewsResponse searchNewsByCategoryFatherOrChild(String categoryFather, String categoryChild);
 	
 	
-	// ·j´M¨Ï¥ÎªÌ´¿¸gµo¥¬¡B½s¿èªº¤å³¹
+	// æœå°‹ä½¿ç”¨è€…æ›¾ç¶“ç™¼å¸ƒã€ç·¨è¼¯çš„æ–‡ç« 
 	public NewsResponse searchNewsByUser(String userAccount);
 	
 	

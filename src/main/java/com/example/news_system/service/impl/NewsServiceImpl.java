@@ -27,14 +27,14 @@ public class NewsServiceImpl implements NewsService {
 	@Autowired
 	private CategoryDao categoryDao;
 
-	// Åã¥Ü©Ò¦³®ø®§
+	// é¡¯ç¤ºæ‰€æœ‰æ¶ˆæ¯
 	@Override
 	public NewsResponse showAllNews() {
 		List<News> result = newsDao.findAllByOrderByNewsCreateDateDesc();
 		return new NewsResponse(result, RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
 	}
 
-	// Åã¥Ü³æ¤@®ø®§
+	// é¡¯ç¤ºå–®ä¸€æ¶ˆæ¯
 	@Override
 	public NewsResponse showOneNews(int newsId) {
 
@@ -55,23 +55,23 @@ public class NewsServiceImpl implements NewsService {
 	
 	
 	
-	// ·s¼W®ø®§
+	// æ–°å¢æ¶ˆæ¯
 	@Override
 	public NewsResponse addNews(String newsTitle, LocalDateTime newsCreateDate, String newsCreateUser,
 			int newsCategoryId, String newsDescription) {
 
-		// ¨¾§b
+		// é˜²å‘†
 		if (!StringUtils.hasText(newsTitle) || !StringUtils.hasText(newsDescription)
 				|| !StringUtils.hasText(newsCreateUser) || newsCreateDate == null || newsCategoryId < 0) {
 			return new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 
-		// ¤ÀÃş¤£¦s¦b
+		// åˆ†é¡ä¸å­˜åœ¨
 		if (!categoryDao.findById(newsCategoryId).isPresent()) {
 			return new NewsResponse(RtnCode.CATEGORY_NOT_FOUND.getMessage());
 		}
 
-		// ¼g¤J
+		// å¯«å…¥
 		News news = new News();
 		news.setNewsTitle(newsTitle);
 		news.setNewsCreateDate(newsCreateDate);
@@ -89,29 +89,29 @@ public class NewsServiceImpl implements NewsService {
 	
 	
 	
-	// §ó·s®ø®§
+	// æ›´æ–°æ¶ˆæ¯
 	@Override
 	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateDate, String newsUpdateUser,
 			int newsCategoryId, String newsDescription) {
 
-		// ¨¾§b
+		// é˜²å‘†
 		if (!StringUtils.hasText(newsTitle) || !StringUtils.hasText(newsDescription)
 				|| !StringUtils.hasText(newsUpdateUser) || newsId < 0 || newsUpdateDate == null || newsCategoryId < 0) {
 			return new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 
-		// ¤ÀÃş¤£¦s¦b
+		// åˆ†é¡ä¸å­˜åœ¨
 		if (!categoryDao.findById(newsCategoryId).isPresent()) {
 			return new NewsResponse(RtnCode.CATEGORY_NOT_FOUND.getMessage());
 		}
 
-		// ®ø®§¤£¦s¦b
+		// æ¶ˆæ¯ä¸å­˜åœ¨
 		Optional<News> resultOp = newsDao.findById(newsId);
 		if (!resultOp.isPresent()) {
 			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
 		}
 
-		// ·s¸ê®Æ¼g¤J
+		// æ–°è³‡æ–™å¯«å…¥
 		News result = resultOp.get();
 		result.setNewsTitle(newsTitle);
 		result.setNewsDescription(newsDescription);
@@ -127,14 +127,14 @@ public class NewsServiceImpl implements NewsService {
 	
 	
 	
-	// ¤£Åã¥Ü®ø®§(ÁôÂÃ)
+	// ä¸é¡¯ç¤ºæ¶ˆæ¯(éš±è—)
 	@Override
 	public NewsResponse inactiveNews(int newsId) {
 
 		if(newsId < 0) {
 		}
 		
-		// ®ø®§¤£¦s¦b
+		// æ¶ˆæ¯ä¸å­˜åœ¨
 		Optional<News> resultOp = newsDao.findById(newsId);
 		if(!resultOp.isPresent()) {
 			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
@@ -142,12 +142,12 @@ public class NewsServiceImpl implements NewsService {
 		
 		News result = resultOp.get();
 		
-		// ¤w¸gÁôÂÃªº®ø®§
+		// å·²ç¶“éš±è—çš„æ¶ˆæ¯
 		if(result.isNewsActive() == false) {
 			return new NewsResponse(RtnCode.NEWS_NOT_ACTIVE.getMessage());
 		}
 		
-		//¼g¤J+Àx¦s
+		//å¯«å…¥+å„²å­˜
 		result.setNewsActive(false);
 		newsDao.save(result);
 		return new NewsResponse(RtnCode.INACTIVE_NEWS_SUCCESS.getMessage());
@@ -156,21 +156,21 @@ public class NewsServiceImpl implements NewsService {
 	
 	
 
-	// §ó·s¾\Äı¼Æ
+	// æ›´æ–°é–±è¦½æ•¸
 	@Override
 	public NewsResponse updateReadingCount(int newsId) {
 		
-		// ¨¾§b
+		// é˜²å‘†
 		if(newsId < 0) {
 		}
 		
-		// ®ø®§¤£¦s¦b
+		// æ¶ˆæ¯ä¸å­˜åœ¨
 		Optional<News> resultOp = newsDao.findById(newsId);
 		if(!resultOp.isPresent()) {
 			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
 		}
 		
-		//¦³¸ê®Æ´N¥[1
+		//æœ‰è³‡æ–™å°±åŠ 1
 		News result = resultOp.get();
 		result.setNewsReadingCount(result.getNewsReadingCount() + 1);
 		return new NewsResponse(result, RtnCode.UPDATE_NEWS_SUCCESS.getMessage());
@@ -178,22 +178,22 @@ public class NewsServiceImpl implements NewsService {
 	
 	
 	
-	// ·j´M®ø®§(¼ĞÃD¡B°_©l®É¶¡¡Bµ²§ô®É¶¡)
+	// æœå°‹æ¶ˆæ¯(æ¨™é¡Œã€èµ·å§‹æ™‚é–“ã€çµæŸæ™‚é–“)
 	@Override
 	public NewsResponse searchNews(String title, LocalDate startDate, LocalDate endDate) {
 
 		List<News> result = new ArrayList<>();
 
 		if (StringUtils.hasText(title) || startDate != null || endDate != null) {
-			// ¦³¥ô¦ó¤@­Ó­È¡A´N¶i¦æ·j´M
+			// æœ‰ä»»ä½•ä¸€å€‹å€¼ï¼Œå°±é€²è¡Œæœå°‹
 			result = newsDao.searchNews(title, startDate, endDate);
 
 		} else {
-			// ©Ò¦³°Ñ¼Æ¬ÒªÅ¡AÅã¥Ü¥ş³¡µ²ªG
+			// æ‰€æœ‰åƒæ•¸çš†ç©ºï¼Œé¡¯ç¤ºå…¨éƒ¨çµæœ
 			result = newsDao.findAll();
 		}
 
-		// ·j´M¤£¨ìµ²ªG®É¡A¦^¶Ç¿ù»~
+		// æœå°‹ä¸åˆ°çµæœæ™‚ï¼Œå›å‚³éŒ¯èª¤
 		if (result.isEmpty()) {
 			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
 		}
@@ -204,7 +204,7 @@ public class NewsServiceImpl implements NewsService {
 	
 
 	
-	// ·j´M®ø®§(by¤ÀÃşid)
+	// æœå°‹æ¶ˆæ¯(byåˆ†é¡id)
 	@Override
 	public NewsResponse searchNewsByCategoryFatherOrChild(String categoryFather, String categoryChild) {
 
@@ -212,17 +212,17 @@ public class NewsServiceImpl implements NewsService {
 			return new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 		
-		// §ä¥XcategoryId
+		// æ‰¾å‡ºcategoryId
 		int categoryId = categoryDao.findByCategoryFatherAndCategoryChild(categoryFather, categoryChild);
 		
-		// ¥Îid¥h·j´M
+		// ç”¨idå»æœå°‹
 		List<News> result = newsDao.findByNewsCategoryIdOrderByNewsCreateDateDesc(categoryId);
 		
 		return new NewsResponse(result, RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
 	}
 
 	
-	// ·j´M¬Y¨Ï¥ÎªÌµo¥¬¡B½s¿èªº©Ò¦³¤å³¹
+	// æœå°‹æŸä½¿ç”¨è€…ç™¼å¸ƒã€ç·¨è¼¯çš„æ‰€æœ‰æ–‡ç« 
 	@Override
 	public NewsResponse searchNewsByUser(String userAccount) {
 		List<News> result = newsDao.findByNewsCreateUserOrNewsUpdateUser(userAccount, userAccount);

@@ -20,19 +20,19 @@ public class CategoryController {
 	@Autowired
  	private CategoryService categoryService;
 	
-	// ·s¼W¤ÀÃþ
+	// æ–°å¢žåˆ†é¡ž
 	@PostMapping(value = "add_category")
 	public CategoryResponse addCategory(@RequestBody AddCategoryRequest request) {
 		return categoryService.addCategory(request.getCategoryFather(), request.getCategoryChild());
 	}
 
-	// §ó·s¤ÀÃþ
+	// æ›´æ–°åˆ†é¡ž
 	@PostMapping(value = "update_category")
 	public CategoryResponse updateCategory(@RequestBody UpdateCategoryRequest request) {
 		return categoryService.updateCategory(request.getCategoryId() ,request.getCategoryFather(), request.getCategoryChild());
 	}
 
-	// Åã¥Ü©Ò¦³¤ÀÃþ¶µ¥Ø
+	// é¡¯ç¤ºæ‰€æœ‰åˆ†é¡žé …ç›®
 	@GetMapping(value = "show_all_category")
 	public CategoryResponse showAllCategory() {
 		return categoryService.showAllCategory();

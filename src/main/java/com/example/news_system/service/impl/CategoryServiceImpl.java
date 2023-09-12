@@ -26,12 +26,12 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryDao categoryDao; 
 
 	
-//	·s¼W¤ÀÃş
+//	æ–°å¢åˆ†é¡
 	@Transactional
 	@Override
 	public CategoryResponse addCategory(String categoryFather, String categoryChild) {
 		
-		// ¨¾§b
+		// é˜²å‘†
 		if(!StringUtils.hasText(categoryFather) || !StringUtils.hasText(categoryChild) ) {
 			return new CategoryResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
@@ -40,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
 		List<Category> existResult = categoryDao.findByCategoryFather(categoryFather);
 		
 
-		// ¦pªG¤÷¼h¤£¦s¦b -> ·s¼W¤@­Ó¤÷¼h
+		// å¦‚æœçˆ¶å±¤ä¸å­˜åœ¨ -> æ–°å¢ä¸€å€‹çˆ¶å±¤
 		if(existResult.isEmpty()) {
 			Category newFather = new Category();
 			newFather.setCategoryFather(categoryFather);
@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
 			categoryDao.save(newFather);
 			categoryLevel++;
 		}
-		// ¦pªG¤÷¼h¦s¦b -> ¨¾¤î¤l¼h­«½Æ·s¼W
+		// å¦‚æœçˆ¶å±¤å­˜åœ¨ -> é˜²æ­¢å­å±¤é‡è¤‡æ–°å¢
 		else {
 			List<String> existChild = new ArrayList<>();
 			for(Category result : existResult) {
@@ -58,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
 				return new CategoryResponse(RtnCode.CATEGORY_EXIST.getMessage());
 			}
 
-			// level³]©w
+			// levelè¨­å®š
 			if(categoryFather.equals(categoryChild)) {
 				categoryLevel = existResult.get(0).getCategoryLevel();
 			}
@@ -68,7 +68,7 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		
 		
-		// ¼g¤J
+		// å¯«å…¥
 		Category category = new Category();
 		category.setCategoryFather(categoryFather);
 		category.setCategoryChild(categoryChild);
@@ -81,12 +81,12 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	
 	
-//	§ó·s¤ÀÃş
+//	æ›´æ–°åˆ†é¡
 	@Transactional
 	@Override
 	public CategoryResponse updateCategory(int categoryId, String categoryFather, String categoryChild) {
 		
-		//¨¾§b
+		//é˜²å‘†
 		if(!StringUtils.hasText(categoryFather) || !StringUtils.hasText(categoryChild)) {
 			return new CategoryResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
@@ -96,7 +96,7 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		
 
-		// ½T©w¦³³oµ§¸ê®Æ
+		// ç¢ºå®šæœ‰é€™ç­†è³‡æ–™
 		Optional<Category> resultOp = categoryDao.findById(categoryId);
 		if(!resultOp.isPresent()) {
 			return new CategoryResponse(RtnCode.CATEGORY_NOT_FOUND.getMessage());
@@ -104,17 +104,17 @@ public class CategoryServiceImpl implements CategoryService {
 		Category result = resultOp.get();
 		
 
-		// ­«½Æ¨¾§b1 §¹¥ş­«½Æ(¨S¦³¥ô¦ó­×§ï)
+		// é‡è¤‡é˜²å‘†1 å®Œå…¨é‡è¤‡(æ²’æœ‰ä»»ä½•ä¿®æ”¹)
 		if(result.getCategoryFather().equals(categoryFather) && result.getCategoryChild().equals(categoryChild)) {
 			return new CategoryResponse(RtnCode.CATEGORY_EXIST.getMessage());
 		}
 		
 
-		// ­«½Æ¨¾§b2 
+		// é‡è¤‡é˜²å‘†2 
 		int categoryLevel = 0;
 		List<Category> existResult = categoryDao.findByCategoryFather(categoryFather);
 		
-		// ¤÷¼h¤£¦s¦b -> ·s¼W¤@­Ó¤÷¼h
+		// çˆ¶å±¤ä¸å­˜åœ¨ -> æ–°å¢ä¸€å€‹çˆ¶å±¤
 		if(existResult.isEmpty()) {
 			Category newFather = new Category();
 			newFather.setCategoryFather(categoryFather);
@@ -122,7 +122,7 @@ public class CategoryServiceImpl implements CategoryService {
 			categoryDao.save(newFather);
 			categoryLevel++;
 		}
-		// ¤÷¼h¦s¦b -> ¨¾¤î¤l¤ÀÃş­«½Æ
+		// çˆ¶å±¤å­˜åœ¨ -> é˜²æ­¢å­åˆ†é¡é‡è¤‡
 		else {
 			List<String> existChild = new ArrayList<>();
 			for(Category existRes : existResult) {
@@ -133,7 +133,7 @@ public class CategoryServiceImpl implements CategoryService {
 				return new CategoryResponse(RtnCode.CATEGORY_EXIST.getMessage());
 			}
 			
-			//level³]©w
+			//levelè¨­å®š
 			if(categoryFather.equals(categoryChild)) {
 				categoryLevel = existResult.get(0).getCategoryLevel();
 			}
@@ -143,7 +143,7 @@ public class CategoryServiceImpl implements CategoryService {
 			
 		}
 		
-		//¼g¤J
+		//å¯«å…¥
 		result.setCategoryFather(categoryFather);
 		result.setCategoryChild(categoryChild);
 		result.setCategoryLevel(categoryLevel);
@@ -154,7 +154,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	
 	
-//	Åã¥Ü©Ò¦³¤ÀÃş
+//	é¡¯ç¤ºæ‰€æœ‰åˆ†é¡
 	@Transactional
 	@Override
 	public CategoryResponse showAllCategory() {

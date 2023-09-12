@@ -7,16 +7,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-/*
- * @Autowired
- *	private NewsService newsService;
- *	
- *	@PostMapping(value = "add_news")
- *	public NewsResponse addNews(@RequestBody AddNewsRequest request) {
- *		return newsService.addNews(request.getNewsTitle(),request.getNewsCategory(), 
- *				request.getNewsCreateDate(), request.getNewsUpdateDate(),request.getNewsDescription());
- *	}
- */
-	
-	
 }

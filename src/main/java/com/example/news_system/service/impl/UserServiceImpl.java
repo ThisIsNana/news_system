@@ -19,28 +19,28 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	
 
-	// µn¤J
+	// ç™»å…¥
 	@Override
 	public UserResponse login(String userAccount, String userPassword) {
 
-		// ¨¾§b
+		// é˜²å‘†
 		if(!StringUtils.hasText(userAccount) || !StringUtils.hasText(userPassword)) {
 			return new UserResponse(false, RtnCode.CANNOT_EMPTY.getMessage());
 		}
 		
-		// ¬O§_¦s¦b
+		// æ˜¯å¦å­˜åœ¨
 		Optional<Users> resultOp = userDao.findById(userAccount);
 		if(!resultOp.isPresent()) {
 			return new UserResponse(false, RtnCode.USER_LOGIN_FAILED.getMessage());
 		}
 		
-		// ±K½X¿ù»~
+		// å¯†ç¢¼éŒ¯èª¤
 		Users result = resultOp.get();
 		if(!result.getUserPassword().equals(userPassword)) {
 			return new UserResponse(false, RtnCode.USER_LOGIN_FAILED.getMessage());
 		}
 		
-		// §â±K½X¤£Åã¥Ü«á¦^¶Ç
+		// æŠŠå¯†ç¢¼ä¸é¡¯ç¤ºå¾Œå›å‚³
 		result.setUserPassword("************");
 		return new UserResponse(true, result, RtnCode.USER_LOGIN_SUCCESS.getMessage());
 	}

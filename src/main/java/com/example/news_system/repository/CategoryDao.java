@@ -10,9 +10,9 @@ import com.example.news_system.entity.Category;
 @Repository
 public interface CategoryDao extends JpaRepository<Category, Integer> {
 	
-	// ·j´M¤÷¤ÀÃş
+	// æœå°‹çˆ¶åˆ†é¡
 	public List<Category> findByCategoryFather(String categoryFather);
 	
-	// ¥Î¤÷¤l¤ÀÃş¥h·j´Mid
+	// ç”¨çˆ¶å­åˆ†é¡å»æœå°‹id
 	public int findByCategoryFatherAndCategoryChild(String categoryFather, String categoryChild);
 }

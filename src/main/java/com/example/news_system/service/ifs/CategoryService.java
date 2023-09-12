@@ -4,12 +4,12 @@ import com.example.news_system.vo.CategoryResponse;
 
 public interface CategoryService {
 
-	// ·s¼W¤ÀÃþ
+	// æ–°å¢žåˆ†é¡ž
 	public CategoryResponse addCategory(String categoryFather, String categoryChild);
 	
-	// §ó·s¤ÀÃþ
+	// æ›´æ–°åˆ†é¡ž
 	public CategoryResponse updateCategory(int categoryId, String categoryFather, String categoryChild);
 	
-	// Åã¥Ü©Ò¦³¤ÀÃþ¶µ¥Ø
+	// é¡¯ç¤ºæ‰€æœ‰åˆ†é¡žé …ç›®
 	public CategoryResponse showAllCategory();
 }
