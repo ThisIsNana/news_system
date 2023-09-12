@@ -13,10 +13,6 @@ public interface CategoryDao extends JpaRepository<Category, Integer> {
 	// 搜尋父分類
 	public List<Category> findByCategoryFather(String categoryFather);
 	
-	// 搜尋子分類
-	public Category findByCategoryChild(String categoryChild);
-	
-	
-	
-	
+	// 用父子分類去搜尋id
+	public int findByCategoryFatherAndCategoryChild(String categoryFather, String categoryChild);
 }

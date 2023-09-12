@@ -30,7 +30,7 @@ public class NewsServiceImpl implements NewsService {
 	// 顯示所有消息
 	@Override
 	public NewsResponse showAllNews() {
-		List<News> result = newsDao.findAll();
+		List<News> result = newsDao.findAllByOrderByNewsCreateDateDesc();
 		return new NewsResponse(result, RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
 	}
 
@@ -162,7 +162,7 @@ public class NewsServiceImpl implements NewsService {
 
 		List<News> result = new ArrayList<>();
 
-		if (StringUtils.hasText(title)|| startDate != null || endDate != null) {
+		if (StringUtils.hasText(title) || startDate != null || endDate != null) {
 			// 有任何一個值，就進行搜尋
 			result = newsDao.searchNews(title, startDate, endDate);
 
@@ -182,7 +182,7 @@ public class NewsServiceImpl implements NewsService {
 	
 
 	
-	// 搜尋消息(by分類)
+	// 搜尋消息(by分類id)
 	@Override
 	public NewsResponse searchNewsByCategoryFatherOrChild(String categoryFather, String categoryChild) {
 		
@@ -191,9 +191,13 @@ public class NewsServiceImpl implements NewsService {
 			return this.showAllNews();
 		}
 		
+		// 找出categoryId
+		int categoryId = categoryDao.findByCategoryFatherAndCategoryChild(categoryFather, categoryChild);
 		
+		// 用id去搜尋
+		List<News> result = newsDao.findByNewsCategoryIdOrderByNewsCreateDateDesc(categoryId);
 		
-		return new NewsResponse(RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
+		return new NewsResponse(result, RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
 	}
 
 	

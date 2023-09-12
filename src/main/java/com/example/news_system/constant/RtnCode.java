@@ -20,12 +20,15 @@ public enum RtnCode {
 //  分類
     ADD_CATEGORY_SUCCESS("200","V 新增分類成功"),
     UPDATE_CATEGORY_SUCCESS("200","V 更新分類成功"),
+    SEARCH_CATEGORY_SUCCESS("200","V 搜尋分類成功"),
     DELETE_CATEGORY_SUCCESS("200","V 刪除分類成功"),
     CATEGORY_ERROR("400","X 分類有誤"),
+    CATEGORY_EXIST("400","X 分類已存在!"),
     CATEGORY_NOT_FOUND("401","X 查無此分類，請先新增"),
     
 //  共有
-    CANNOT_EMPTY("400", "請勿空白，請查看欄位"),
+    CANNOT_EMPTY("400", "X 請勿空白，請查看欄位"),
+    SHOW_SUCCESS("400", "V 成功，已列出所有結果"),
     ;
 
 

@@ -15,10 +15,9 @@ public interface NewsDao extends JpaRepository<News, Integer>{
 
 //	用JPQL來取代冗長的JPA:)
 	@Query("SELECT n FROM News n " +
-		       "JOIN n.newsCategory c " +
 		       "WHERE (:title IS NULL OR n.newsTitle LIKE %:title%) " +
-		       "AND (:startDate IS NULL OR n.newsUpdateDate >= :startDate) " +
-		       "AND (:endDate IS NULL OR n.newsUpdateDate <= :endDate)")
+		       "AND (:startDate IS NULL OR n.newsCreateDate >= :startDate) " +
+		       "AND (:endDate IS NULL OR n.newsCreateDate <= :endDate)")
 		public List<News> searchNews(
 		    @Param("title") String title, 
 		    @Param("startDate") LocalDate startDate, 
@@ -26,12 +25,12 @@ public interface NewsDao extends JpaRepository<News, Integer>{
 		);
 	
 	
-	// 搜尋父分類
-	public List<News> findAllByCategoryId();
-	
-	
-	
 	// 搜尋子分類
-	public List<News> findByCategoryIdOrderByNewsCreateDateDesc(int categoryId);
+	public List<News> findByNewsCategoryIdOrderByNewsCreateDateDesc(int categoryId);
+	
+	
+//	@Query("SELECT n FROM News n ORDER BY n.newsCreateDate DESC")
+	public List<News> findAllByOrderByNewsCreateDateDesc();
+
 
 }
