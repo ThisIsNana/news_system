@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.news_system.service.ifs.CategoryService;
 import com.example.news_system.vo.AddCategoryRequest;
 import com.example.news_system.vo.CategoryResponse;
+import com.example.news_system.vo.DeleteCategoryRequest;
 import com.example.news_system.vo.UpdateCategoryRequest;
 
 @CrossOrigin
@@ -38,5 +39,10 @@ public class CategoryController {
 		return categoryService.showAllCategory();
 	}
 	
+	// 刪除分類
+	@PostMapping(value = "delete_cateogory")
+	public CategoryResponse deleteCateogory(@RequestBody DeleteCategoryRequest request) {
+		return categoryService.deleteCateogory(request.getDeleteCategoryId());
+	}
 	
 }

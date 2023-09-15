@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "news")
+@Table(name = "category")
 public class Category {
 
 	@Id
@@ -23,21 +23,17 @@ public class Category {
 	@Column(name = "category_child")
 	private String categoryChild;
 
-	@Column(name = "category_level")
-	private int categoryLevel;
-
 	// ========================================================
 
 	public Category() {
 		super();
 	}
 
-	public Category(int categoryId, String categoryFather, String categoryChild, int categoryLevel) {
+	public Category(int categoryId, String categoryFather, String categoryChild) {
 		super();
 		this.categoryId = categoryId;
 		this.categoryFather = categoryFather;
 		this.categoryChild = categoryChild;
-		this.categoryLevel = categoryLevel;
 	}
 
 	// ========================================================
@@ -64,14 +60,6 @@ public class Category {
 
 	public void setCategoryChild(String categoryChild) {
 		this.categoryChild = categoryChild;
-	}
-
-	public int getCategoryLevel() {
-		return categoryLevel;
-	}
-
-	public void setCategoryLevel(int categoryLevel) {
-		this.categoryLevel = categoryLevel;
 	}
 
 }

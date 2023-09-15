@@ -48,7 +48,7 @@ public class NewsController {
 	
 	
 	// 更新消息
-	@PostMapping(value="updateNews")
+	@PostMapping(value="update_news")
 	public NewsResponse updateNews(@RequestBody UpdateNewsRequest request) {
 		return newsService.updateNews(request.getNewsId(),request.getNewsTitle(), 
 				request.getNewsUpdateDate(), request.getNewsUpdateName(),

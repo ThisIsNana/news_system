@@ -1,6 +1,5 @@
 package com.example.news_system.service.impl;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,25 @@ public class NewsServiceImpl implements NewsService {
 	@Autowired
 	private CategoryDao categoryDao;
 
+	
+
+	// 防呆用
+	private boolean hasString(String str) {
+		boolean result = StringUtils.hasText(str);
+		return result;
+	}
+	
+	private boolean isLegalInt(int i) {
+		boolean result = i > 0;
+		return result;
+	}
+	
+	private boolean hasDateTime(LocalDateTime ldt) {
+		boolean result = ldt != null;
+		return result;
+	}
+	
+	
 	// 顯示所有消息
 	@Override
 	public NewsResponse showAllNews() {
@@ -38,7 +56,8 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public NewsResponse showOneNews(int newsId) {
 
-		if (newsId < 0) {
+		// 防呆
+		if (!isLegalInt(newsId)) {
 			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
 		}
 
@@ -52,17 +71,15 @@ public class NewsServiceImpl implements NewsService {
 		return new NewsResponse(result, RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
 	}
 
-	
-	
-	
 	// 新增消息
 	@Override
 	public NewsResponse addNews(String newsTitle, LocalDateTime newsCreateDate, String newsCreateUser,
 			int newsCategoryId, String newsDescription) {
 
 		// 防呆
-		if (!StringUtils.hasText(newsTitle) || !StringUtils.hasText(newsDescription)
-				|| !StringUtils.hasText(newsCreateUser) || newsCreateDate == null || newsCategoryId < 0) {
+		if (!hasString(newsTitle) 
+				|| !hasString(newsDescription)  || !hasString(newsCreateUser) 
+				|| !hasDateTime(newsCreateDate) || !isLegalInt(newsCategoryId)) {
 			return new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 
@@ -86,17 +103,15 @@ public class NewsServiceImpl implements NewsService {
 		return new NewsResponse(news, RtnCode.ADD_NEWS_SUCCESS.getMessage());
 	}
 
-	
-	
-	
 	// 更新消息
 	@Override
 	public NewsResponse updateNews(int newsId, String newsTitle, LocalDateTime newsUpdateDate, String newsUpdateUser,
 			int newsCategoryId, String newsDescription) {
 
 		// 防呆
-		if (!StringUtils.hasText(newsTitle) || !StringUtils.hasText(newsDescription)
-				|| !StringUtils.hasText(newsUpdateUser) || newsId < 0 || newsUpdateDate == null || newsCategoryId < 0) {
+		if (!hasString(newsTitle) || !hasString(newsDescription)
+			|| !hasString(newsUpdateUser)   || !isLegalInt(newsId) 
+			|| !hasDateTime(newsUpdateDate) || !isLegalInt(newsCategoryId)) {
 			return new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 
@@ -124,67 +139,65 @@ public class NewsServiceImpl implements NewsService {
 		return new NewsResponse(result, RtnCode.UPDATE_NEWS_SUCCESS.getMessage());
 	}
 
-	
-	
-	
 	// 不顯示消息(隱藏)
 	@Override
 	public NewsResponse inactiveNews(int newsId) {
 
-		if(newsId < 0) {
-		}
-		
-		// 消息不存在
-		Optional<News> resultOp = newsDao.findById(newsId);
-		if(!resultOp.isPresent()) {
+		// 防呆
+		if (!isLegalInt(newsId)) {
 			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
 		}
-		
+
+		// 消息不存在
+		Optional<News> resultOp = newsDao.findById(newsId);
+		if (!resultOp.isPresent()) {
+			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
+		}
+
 		News result = resultOp.get();
-		
+
 		// 已經隱藏的消息
-		if(result.isNewsActive() == false) {
+		if (result.isNewsActive() == false) {
 			return new NewsResponse(RtnCode.NEWS_NOT_ACTIVE.getMessage());
 		}
-		
-		//寫入+儲存
+
+		// 寫入+儲存
 		result.setNewsActive(false);
 		newsDao.save(result);
 		return new NewsResponse(RtnCode.INACTIVE_NEWS_SUCCESS.getMessage());
-		
+
 	}
-	
-	
 
 	// 更新閱覽數
 	@Override
 	public NewsResponse updateReadingCount(int newsId) {
-		
+
 		// 防呆
-		if(newsId < 0) {
-		}
-		
-		// 消息不存在
-		Optional<News> resultOp = newsDao.findById(newsId);
-		if(!resultOp.isPresent()) {
+		if (!isLegalInt(newsId)) {
 			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
 		}
-		
-		//有資料就加1
+
+		// 消息不存在
+		Optional<News> resultOp = newsDao.findById(newsId);
+		if (!resultOp.isPresent()) {
+			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
+		}
+
+		// 有資料就加1
 		News result = resultOp.get();
 		result.setNewsReadingCount(result.getNewsReadingCount() + 1);
 		return new NewsResponse(result, RtnCode.UPDATE_NEWS_SUCCESS.getMessage());
 	}
-	
+
 	
 	
 	// 搜尋消息(標題、起始時間、結束時間)
 	@Override
-	public NewsResponse searchNews(String title, LocalDate startDate, LocalDate endDate) {
+	public NewsResponse searchNews(String title, LocalDateTime startDate, LocalDateTime endDate) {
 
 		List<News> result = new ArrayList<>();
 
-		if (StringUtils.hasText(title) || startDate != null || endDate != null) {
+		if ( hasString(title) || hasDateTime(startDate) || hasDateTime(endDate)) {
 			// 有任何一個值，就進行搜尋
 			result = newsDao.searchNews(title, startDate, endDate);
 
@@ -203,36 +216,38 @@ public class NewsServiceImpl implements NewsService {
 	
 	
 
-	
 	// 搜尋消息(by分類id)
 	@Override
 	public NewsResponse searchNewsByCategoryFatherOrChild(String categoryFather, String categoryChild) {
 
-		if(!StringUtils.hasText(categoryFather) || !StringUtils.hasText(categoryChild)) {
+		if (!StringUtils.hasText(categoryFather) || !StringUtils.hasText(categoryChild)) {
 			return new NewsResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
-		
-		// 找出categoryId
-		int categoryId = categoryDao.findByCategoryFatherAndCategoryChild(categoryFather, categoryChild);
-		
+
+		// 確認是否存在
+		Category category = categoryDao.findByCategoryFatherAndCategoryChild(categoryFather, categoryChild);
+		if(category == null) {
+			return new NewsResponse(RtnCode.CATEGORY_NOT_FOUND.getMessage());
+		}
+				
 		// 用id去搜尋
-		List<News> result = newsDao.findByNewsCategoryIdOrderByNewsCreateDateDesc(categoryId);
-		
+		List<News> result = newsDao.findByNewsCategoryIdOrderByNewsCreateDateDesc(category.getCategoryId());
+
 		return new NewsResponse(result, RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
 	}
 
+	
 	
 	// 搜尋某使用者發布、編輯的所有文章
 	@Override
 	public NewsResponse searchNewsByUser(String userAccount) {
 		List<News> result = newsDao.findByNewsCreateUserOrNewsUpdateUser(userAccount, userAccount);
-		if(result.isEmpty()) {
+		if (result.isEmpty()) {
 			return new NewsResponse(RtnCode.NEWS_NOT_FOUND.getMessage());
 		}
-		
+
 		return new NewsResponse(result, RtnCode.SEARCH_NEWS_SUCCESS.getMessage());
 	}
-	
 
 
 }

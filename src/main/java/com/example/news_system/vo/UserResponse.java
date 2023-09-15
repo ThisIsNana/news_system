@@ -4,6 +4,7 @@ import com.example.news_system.entity.Users;
 
 public class UserResponse {
 
+	// 登入與註冊共用-->是否為使用者、是否為已存在帳號
 	private boolean isUser;
 
 	private Users user;
@@ -19,6 +20,11 @@ public class UserResponse {
 	public UserResponse(String message) {
 		super();
 		this.message = message;
+	}
+	
+	public UserResponse(boolean isUser) {
+		super();
+		this.isUser = isUser;
 	}
 
 	public UserResponse(boolean isUser, String message) {

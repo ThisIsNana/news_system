@@ -35,7 +35,7 @@ public interface NewsService {
 	
 	
 	// 搜尋消息(標題、起迄時間)
-	public NewsResponse searchNews(String title, LocalDate startDate, LocalDate endDate);
+	public NewsResponse searchNews(String title, LocalDateTime startDate, LocalDateTime endDate);
 	
 	
 	// 搜尋消息(by分類)

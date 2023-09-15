@@ -1,11 +1,9 @@
 package com.example.news_system.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -16,6 +14,7 @@ import org.springframework.util.StringUtils;
 import com.example.news_system.constant.RtnCode;
 import com.example.news_system.entity.Category;
 import com.example.news_system.repository.CategoryDao;
+import com.example.news_system.repository.NewsDao;
 import com.example.news_system.service.ifs.CategoryService;
 import com.example.news_system.vo.CategoryResponse;
 
@@ -24,58 +23,63 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	@Autowired
 	private CategoryDao categoryDao; 
+	
+	@Autowired 
+	private NewsDao newsDao;
 
+
+	// 防呆用
+	private boolean hasString(String str) {
+		boolean result = StringUtils.hasText(str);
+		return result;
+	}
+	
+	private boolean isLegalInt(int i) {
+		boolean result = i > 0;
+		return result;
+	}
+	
+	
 	
 //	新增分類
 	@Transactional
 	@Override
 	public CategoryResponse addCategory(String categoryFather, String categoryChild) {
-		
-		// 防呆
-		if(!StringUtils.hasText(categoryFather) || !StringUtils.hasText(categoryChild) ) {
-			return new CategoryResponse(RtnCode.CANNOT_EMPTY.getMessage());
-		}
-		
-		int categoryLevel = 0;
-		List<Category> existResult = categoryDao.findByCategoryFather(categoryFather);
-		
 
-		// 如果父層不存在 -> 新增一個父層
-		if(existResult.isEmpty()) {
-			Category newFather = new Category();
-			newFather.setCategoryFather(categoryFather);
-			newFather.setCategoryChild(categoryFather);
-			categoryDao.save(newFather);
-			categoryLevel++;
-		}
-		// 如果父層存在 -> 防止子層重複新增
-		else {
-			List<String> existChild = new ArrayList<>();
-			for(Category result : existResult) {
-				existChild.add(result.getCategoryChild());
-			}
-			if(existChild.contains(categoryChild)) {
-				return new CategoryResponse(RtnCode.CATEGORY_EXIST.getMessage());
-			}
+	    // 防呆
+	    if (!hasString(categoryFather) || !hasString(categoryChild)) {
+	        return new CategoryResponse(RtnCode.CANNOT_EMPTY.getMessage());
+	    }
 
-			// level設定
-			if(categoryFather.equals(categoryChild)) {
-				categoryLevel = existResult.get(0).getCategoryLevel();
-			}
-			else {
-				categoryLevel = existResult.get(0).getCategoryLevel()+ 1;	
-			}
-		}
-		
-		
-		// 寫入
-		Category category = new Category();
-		category.setCategoryFather(categoryFather);
-		category.setCategoryChild(categoryChild);
-		category.setCategoryLevel(categoryLevel);
-		categoryDao.save(category);
-		
-		return new CategoryResponse(category, RtnCode.ADD_CATEGORY_SUCCESS.getMessage());
+	    // 不允許父子層相同
+	    if(categoryFather.equals(categoryChild)) {
+		    return new CategoryResponse(RtnCode.CATEGORY_FATHER_CHILD_SAME.getMessage());
+	    }
+
+	    // 確認DB不重複
+	    Category result = categoryDao.findByCategoryFatherAndCategoryChild(categoryFather, categoryChild);
+	    if(result != null) {
+		    return new CategoryResponse(RtnCode.CATEGORY_EXIST.getMessage());
+	    }
+	    
+	    
+	    List<Category> existFather = categoryDao.findByCategoryFather(categoryFather);
+	    // 父層存在 => 檢查子層
+	    if(!existFather.isEmpty()) {
+	    	for(Category father : existFather) {
+	    		if(father.getCategoryChild().equals(categoryChild)) {
+	    			return new CategoryResponse(RtnCode.CATEGORY_EXIST.getMessage());
+	    		}
+	    	}
+	    }
+	    
+	    // 父&子分類都檢查完，寫入!
+	    Category category = new Category();
+	    category.setCategoryFather(categoryFather);
+	    category.setCategoryChild(categoryChild);
+	    categoryDao.save(category);
+
+	    return new CategoryResponse(RtnCode.ADD_CATEGORY_SUCCESS.getMessage());
 	}
 
 	
@@ -87,11 +91,11 @@ public class CategoryServiceImpl implements CategoryService {
 	public CategoryResponse updateCategory(int categoryId, String categoryFather, String categoryChild) {
 		
 		//防呆
-		if(!StringUtils.hasText(categoryFather) || !StringUtils.hasText(categoryChild)) {
+		if(!hasString(categoryFather) || !hasString(categoryChild)) {
 			return new CategoryResponse(RtnCode.CANNOT_EMPTY.getMessage());
 		}
 		
-		if(categoryId <= 0) {
+		if(!isLegalInt(categoryId)) {
 			return new CategoryResponse(RtnCode.CATEGORY_NOT_FOUND.getMessage());
 		}
 		
@@ -108,45 +112,21 @@ public class CategoryServiceImpl implements CategoryService {
 		if(result.getCategoryFather().equals(categoryFather) && result.getCategoryChild().equals(categoryChild)) {
 			return new CategoryResponse(RtnCode.CATEGORY_EXIST.getMessage());
 		}
-		
 
-		// 重複防呆2 
-		int categoryLevel = 0;
-		List<Category> existResult = categoryDao.findByCategoryFather(categoryFather);
 		
-		// 父層不存在 -> 新增一個父層
-		if(existResult.isEmpty()) {
-			Category newFather = new Category();
-			newFather.setCategoryFather(categoryFather);
-			newFather.setCategoryChild(categoryFather);
-			categoryDao.save(newFather);
-			categoryLevel++;
-		}
-		// 父層存在 -> 防止子分類重複
-		else {
-			List<String> existChild = new ArrayList<>();
-			for(Category existRes : existResult) {
-				existChild.add(existRes.getCategoryChild());
-			}
-			
-			if(existChild.contains(categoryChild)) {
-				return new CategoryResponse(RtnCode.CATEGORY_EXIST.getMessage());
-			}
-			
-			//level設定
-			if(categoryFather.equals(categoryChild)) {
-				categoryLevel = existResult.get(0).getCategoryLevel();
-			}
-			else {
-				categoryLevel = existResult.get(0).getCategoryLevel()+ 1;	
-			}
-			
-		}
+	    List<Category> existFather = categoryDao.findByCategoryFather(categoryFather);
+	    // 父層存在 => 檢查子層
+	    if(!existFather.isEmpty()) {
+	    	for(Category father : existFather) {
+	    		if(father.getCategoryChild().equals(categoryChild)) {
+	    			return new CategoryResponse(RtnCode.CATEGORY_EXIST.getMessage());
+	    		}
+	    	}
+	    }
 		
-		//寫入
+		// 都檢查完就寫入!
 		result.setCategoryFather(categoryFather);
 		result.setCategoryChild(categoryChild);
-		result.setCategoryLevel(categoryLevel);
 		categoryDao.save(result);
 		
 		return new CategoryResponse(result, RtnCode.UPDATE_CATEGORY_SUCCESS.getMessage());
@@ -160,6 +140,38 @@ public class CategoryServiceImpl implements CategoryService {
 	public CategoryResponse showAllCategory() {
 		List<Category> resultList = categoryDao.findAll();
 		return new CategoryResponse(resultList, RtnCode.SHOW_SUCCESS.getMessage());
+	}
+
+
+
+
+	@Override
+	public CategoryResponse deleteCateogory(int categoryId) {
+
+		// 防呆
+		if(isLegalInt(categoryId)) {
+			return new CategoryResponse(RtnCode.CATEGORY_NOT_FOUND.getMessage());
+		}
+		
+		Optional<Category> resultOp = categoryDao.findById(categoryId);
+		if(!resultOp.isPresent()) {
+			return new CategoryResponse(RtnCode.CATEGORY_NOT_FOUND.getMessage());
+		}
+		Category result = resultOp.get();
+		
+		// 如果子分類名稱作為父分類去搜尋，發現還有子分類的話，報錯
+		if(categoryDao.findByCategoryFather(result.getCategoryChild()).size() != 1) {
+			return new CategoryResponse(RtnCode.DELETE_CATEGORY_CHILD_EXIST.getMessage());
+		}
+		
+		// 如果這個分類有人使用，報錯
+		if(newsDao.findByNewsCategoryIdOrderByNewsCreateDateDesc(categoryId).size() > 0) {
+			return new CategoryResponse(RtnCode.DELETE_CATEGORY_NEWS_USED.getCode());
+		}
+		
+		// 直接刪除
+		categoryDao.delete(result);
+		return null;
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.example.news_system.repository;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,8 +20,8 @@ public interface NewsDao extends JpaRepository<News, Integer>{
 		       "AND (:endDate IS NULL OR n.newsCreateDate <= :endDate)")
 		public List<News> searchNews(
 		    @Param("title") String title, 
-		    @Param("startDate") LocalDate startDate, 
-		    @Param("endDate") LocalDate endDate
+		    @Param("startDate") LocalDateTime startDate, 
+		    @Param("endDate") LocalDateTime endDate
 		);
 	
 	

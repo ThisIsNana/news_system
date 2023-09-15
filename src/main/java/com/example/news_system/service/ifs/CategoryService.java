@@ -12,4 +12,7 @@ public interface CategoryService {
 	
 	// 顯示所有分類項目
 	public CategoryResponse showAllCategory();
+	
+	// 刪除分類
+	public CategoryResponse deleteCateogory(int categoryId);
 }

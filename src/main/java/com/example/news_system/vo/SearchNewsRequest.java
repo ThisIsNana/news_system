@@ -1,6 +1,7 @@
 package com.example.news_system.vo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,10 +11,10 @@ public class SearchNewsRequest {
 	private String title;
 
 	@JsonProperty("search_start_date")
-	private LocalDate startDate;
+	private LocalDateTime startDate;
 
 	@JsonProperty("search_end_date")
-	private LocalDate endDate;
+	private LocalDateTime endDate;
 
 	@JsonProperty("search_category_father")
 	private String categoryFather;
@@ -32,19 +33,20 @@ public class SearchNewsRequest {
 		this.title = title;
 	}
 
-	public LocalDate getStartDate() {
+
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
 
-	public LocalDate getEndDate() {
+	public LocalDateTime getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(LocalDate endDate) {
+	public void setEndDate(LocalDateTime endDate) {
 		this.endDate = endDate;
 	}
 
